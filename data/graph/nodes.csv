@@ -1,9 +1,38 @@
 topic_id,label,paper_count
-0,"robot, manipulation, policy, action, control",486
-1,"models, agents, ai, model, language",478
-2,"data, model, neural, framework, learning",271
-3,"quantum, states, phase, systems, coupling",230
-4,"galaxies, stellar, observations, emission, galaxy",179
-5,"visual, models, image, reasoning, multimodal",160
-6,"graph, graphs, number, prove, vertices",104
-7,"segmentation, mri, clinical, framework, data",83
+0,"retrieval, rag, search, query, queries",203
+1,"visual, multimodal, image, models, images",187
+2,"recommendation, user, item, semantic, items",121
+3,"contact, tactile, manipulation, dexterous, robot",115
+4,"segmentation, clinical, medical, image, imaging",101
+5,"llms, models, language, bias, languages",72
+6,"speech, audio, asr, speaker, pitch",67
+7,"clinical, medical, health, llms, models",63
+8,"agent, agents, skill, tool, skills",57
+9,"navigation, planning, environments, path, robot",44
+10,"action, world, manipulation, robot, actions",44
+11,"lidar, radar, point, pose, autonomous",43
+12,"attack, security, attacks, safety, defense",42
+13,"vla, robot, action, execution, task",41
+14,"reward, decision, regret, optimal, policies",38
+15,"driving, autonomous, autonomous driving, vehicles, mobility",32
+16,"privacy, private, unlearning, data, dp",32
+17,"gpu, attention, cpu, layers, memory",31
+18,"memory, facts, retrieval, longterm, memories",30
+19,"policy, tasks, imitation, manipulation, learning",29
+20,"classification, image, convolutional, jpeg, compression",28
+21,"rendering, 3d, gaussian, 3dgs, geometry",27
+22,"reasoning, cot, latent, language, answer",23
+23,"atmospheric, forecast, spatiotemporal, climate, forecasting",20
+24,"anomaly, anomaly detection, detection, contamination, abnormal",14
+25,"adversarial, attacks, world models, world, perturbations",14
+26,"conservation, gradient, residual, curvature, transformers",13
+27,"training, grpo, rl, policy, entropy",13
+28,"social, behavior, chatbots, ai, training",13
+29,"reasoning, rlvr, grpo, onpolicy, rl",13
+30,"neural, neural operators, operators, operator, physical",13
+31,"gaussian, illumination, color, enhancement, details",13
+32,"proof, mathematics, formal, lean, language",11
+33,"safe, safety, rl, policy, neural ode",10
+34,"evidence, retrieval, document, multimodal, graph",10
+35,"learner, teaching, reallife, tutor, skills",8
+36,"continual, representational, recurrent, coupling, network",8

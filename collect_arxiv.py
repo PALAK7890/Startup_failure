@@ -5,16 +5,13 @@ from tqdm import tqdm
 client = arxiv.Client()
 
 queries = [
-    "cat:cs.CL",   # NLP / LLMs
-    "cat:cs.CV",   # Computer Vision
-    "cat:cs.RO",   # Robotics
-    "cat:cs.LG",   # Machine Learning
-    "cat:cs.AI",   # AI
-    "cat:cs.IR",   # Information Retrieval
-    "cat:q-bio.QM",# Medical Imaging/Bio
-    "cat:stat.ML"
+    "cs.AI",
+    "cs.LG",
+    "cs.CL",
+    "cs.CV",
+    "cs.RO",
+    "cs.IR"
 ]
-
 papers = []
 
 for query in queries:

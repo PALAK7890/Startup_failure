@@ -3,13 +3,22 @@ import torch
 import torch.nn.functional as F
 
 from torch_geometric.data import Data
+from torch_geometric.transforms import RandomLinkSplit
 from torch_geometric.nn import GCNConv
 
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import (
+    accuracy_score,
+    roc_auc_score,
+    average_precision_score,
+    f1_score
+)
 
-# ======================================
-# LOAD FEATURES
-# ======================================
+
+# ====================================================
+# LOAD NODE FEATURES
+# ====================================================
+
+print("Loading node features...")
 
 features_df = pd.read_csv(
     "data/graph/node_features.csv"
@@ -26,81 +35,30 @@ X = torch.tensor(
     dtype=torch.float
 )
 
-# ======================================
+input_dim = X.shape[1]
+
+print("Feature shape:", X.shape)
+
+
+# ====================================================
 # LOAD EDGES
-# ======================================
+# ====================================================
+
+print("Loading graph edges...")
 
 edges_df = pd.read_csv(
     "data/graph/edges.csv"
 )
 
-positive_edges = list(
-    zip(
-        edges_df["source"],
-        edges_df["target"]
-    )
-)
-
-# ======================================
-# NEGATIVE SAMPLING
-# ======================================
-
-num_nodes = len(features_df)
-
-positive_set = set(
-    tuple(sorted(edge))
-    for edge in positive_edges
-)
-
-negative_edges = []
-
-for i in range(num_nodes):
-
-    for j in range(i + 1, num_nodes):
-
-        if (i, j) not in positive_set:
-
-            negative_edges.append(
-                (i, j)
-            )
-
-negative_edges = negative_edges[
-    :len(positive_edges)
-]
-
-# ======================================
-# TRAIN DATA
-# ======================================
-
-all_edges = (
-    positive_edges +
-    negative_edges
-)
-
-labels = (
-    [1] * len(positive_edges) +
-    [0] * len(negative_edges)
-)
-
-train_edges, test_edges, train_labels, test_labels = train_test_split(
-    all_edges,
-    labels,
-    test_size=0.2,
-    random_state=42
-)
-
-# ======================================
-# GRAPH
-# ======================================
-
 edge_index = torch.tensor(
     [
-        edges_df["source"].tolist(),
-        edges_df["target"].tolist()
+        edges_df["source"].values,
+        edges_df["target"].values
     ],
     dtype=torch.long
 )
 
+# make graph undirected
 edge_index = torch.cat(
     [
         edge_index,
@@ -114,20 +72,41 @@ data = Data(
     edge_index=edge_index
 )
 
-# ======================================
+print(data)
+
+
+# ====================================================
+# TRAIN / VAL / TEST SPLIT
+# ====================================================
+
+transform = RandomLinkSplit(
+    num_val=0.1,
+    num_test=0.2,
+    is_undirected=True,
+    add_negative_train_samples=True,
+    neg_sampling_ratio=1.0
+)
+
+train_data, val_data, test_data = transform(data)
+
+print()
+print("Train edges:", train_data.edge_label.shape[0])
+print("Val edges:", val_data.edge_label.shape[0])
+print("Test edges:", test_data.edge_label.shape[0])
+
+
+# ====================================================
 # MODEL
-# ======================================
+# ====================================================
 
-class LinkPredictor(
-    torch.nn.Module
-):
+class LinkPredictor(torch.nn.Module):
 
-    def __init__(self):
+    def __init__(self, input_dim):
 
         super().__init__()
 
         self.conv1 = GCNConv(
-            384,
+            input_dim,
             128
         )
 
@@ -136,17 +115,6 @@ class LinkPredictor(
             64
         )
 
-        self.classifier = torch.nn.Sequential(
-            torch.nn.Linear(
-                128,
-                64
-            ),
-            torch.nn.ReLU(),
-            torch.nn.Linear(
-                64,
-                1
-            )
-        )
 
     def encode(
         self,
@@ -168,113 +136,241 @@ class LinkPredictor(
 
         return x
 
+
     def decode(
         self,
         z,
-        edges
+        edge_label_index
     ):
 
-        edge_embeddings = []
+        src = edge_label_index[0]
+        dst = edge_label_index[1]
 
-        for src, dst in edges:
+        return (
+            z[src] * z[dst]
+        ).sum(dim=1)
 
-            edge_embeddings.append(
-                torch.cat(
-                    [
-                        z[src],
-                        z[dst]
-                    ]
-                )
-            )
 
-        edge_embeddings = torch.stack(
-            edge_embeddings
-        )
+# ====================================================
+# INITIALIZE MODEL
+# ====================================================
 
-        return self.classifier(
-            edge_embeddings
-        ).squeeze()
+device = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "cpu"
+)
 
-# ======================================
-# TRAIN
-# ======================================
+print("\nUsing device:", device)
 
-model = LinkPredictor()
+model = LinkPredictor(
+    input_dim
+).to(device)
+
+train_data = train_data.to(device)
+val_data = val_data.to(device)
+test_data = test_data.to(device)
 
 optimizer = torch.optim.Adam(
     model.parameters(),
     lr=0.01
 )
 
-loss_fn = torch.nn.BCEWithLogitsLoss()
+criterion = torch.nn.BCEWithLogitsLoss()
 
-for epoch in range(100):
+
+# ====================================================
+# TRAIN FUNCTION
+# ====================================================
+
+def train():
 
     model.train()
 
     optimizer.zero_grad()
 
     z = model.encode(
-        data.x,
-        data.edge_index
+        train_data.x,
+        train_data.edge_index
     )
 
-    preds = model.decode(
+    logits = model.decode(
         z,
-        train_edges
+        train_data.edge_label_index
     )
 
-    y = torch.tensor(
-        train_labels,
-        dtype=torch.float
-    )
-
-    loss = loss_fn(
-        preds,
-        y
+    loss = criterion(
+        logits,
+        train_data.edge_label.float()
     )
 
     loss.backward()
 
     optimizer.step()
 
-    if epoch % 10 == 0:
+    return loss.item()
 
-        print(
-            f"Epoch {epoch} | Loss {loss.item():.4f}"
+
+# ====================================================
+# EVALUATION
+# ====================================================
+
+@torch.no_grad()
+def evaluate(data_split):
+
+    model.eval()
+
+    z = model.encode(
+        data_split.x,
+        data_split.edge_index
+    )
+
+    logits = model.decode(
+        z,
+        data_split.edge_label_index
+    )
+
+    probs = torch.sigmoid(
+        logits
+    ).cpu().numpy()
+
+    y_true = (
+        data_split.edge_label
+        .cpu()
+        .numpy()
+    )
+
+    y_pred = (
+        probs > 0.5
+    ).astype(int)
+
+    acc = accuracy_score(
+        y_true,
+        y_pred
+    )
+
+    auc = roc_auc_score(
+        y_true,
+        probs
+    )
+
+    ap = average_precision_score(
+        y_true,
+        probs
+    )
+
+    f1 = f1_score(
+        y_true,
+        y_pred
+    )
+
+    return acc, auc, ap, f1
+
+
+# ====================================================
+# TRAINING LOOP
+# ====================================================
+
+print("\nTraining...\n")
+
+for epoch in range(1, 201):
+
+    loss = train()
+
+    if epoch % 20 == 0:
+
+        val_acc, val_auc, val_ap, val_f1 = evaluate(
+            val_data
         )
 
-# ======================================
-# TEST
-# ======================================
+        print(
+            f"Epoch {epoch:03d} | "
+            f"Loss {loss:.4f} | "
+            f"Val AUC {val_auc:.4f}"
+        )
 
-model.eval()
+
+# ====================================================
+# FINAL TEST
+# ====================================================
+
+test_acc, test_auc, test_ap, test_f1 = evaluate(
+    test_data
+)
+
+print("\n==============================")
+print("FINAL TEST RESULTS")
+print("==============================")
+
+print(
+    "Accuracy:",
+    round(test_acc,4)
+)
+
+print(
+    "ROC-AUC:",
+    round(test_auc,4)
+)
+
+print(
+    "Average Precision:",
+    round(test_ap,4)
+)
+
+print(
+    "F1 Score:",
+    round(test_f1,4)
+)
+
+
+# ====================================================
+# SAMPLE PREDICTIONS
+# ====================================================
+
+print("\nSample Predictions\n")
 
 with torch.no_grad():
 
+    model.eval()
+
     z = model.encode(
-        data.x,
-        data.edge_index
+        test_data.x,
+        test_data.edge_index
     )
 
-    preds = torch.sigmoid(
-        model.decode(
-            z,
-            test_edges
-        )
+    logits = model.decode(
+        z,
+        test_data.edge_label_index
     )
 
-print("\nPredictions\n")
+    probs = torch.sigmoid(
+        logits
+    )
 
-for edge, score in zip(
-    test_edges,
-    preds
-):
+for i in range(30):
+
+    src = (
+        test_data.edge_label_index[0][i]
+        .item()
+    )
+
+    dst = (
+        test_data.edge_label_index[1][i]
+        .item()
+    )
+
+    label = (
+        test_data.edge_label[i]
+        .item()
+    )
+
+    score = (
+        probs[i]
+        .item()
+    )
 
     print(
-        edge,
-        round(
-            score.item(),
-            3
-        )
+        f"({src},{dst}) "
+        f"True={label} "
+        f"Prob={score:.3f}"
     )
