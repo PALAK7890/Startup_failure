@@ -1,38 +1,40 @@
 topic_id,label,paper_count
-0,"retrieval, rag, search, query, queries",203
-1,"visual, multimodal, image, models, images",187
-2,"recommendation, user, item, semantic, items",121
-3,"contact, tactile, manipulation, dexterous, robot",115
-4,"segmentation, clinical, medical, image, imaging",101
-5,"llms, models, language, bias, languages",72
-6,"speech, audio, asr, speaker, pitch",67
-7,"clinical, medical, health, llms, models",63
-8,"agent, agents, skill, tool, skills",57
-9,"navigation, planning, environments, path, robot",44
-10,"action, world, manipulation, robot, actions",44
-11,"lidar, radar, point, pose, autonomous",43
-12,"attack, security, attacks, safety, defense",42
-13,"vla, robot, action, execution, task",41
-14,"reward, decision, regret, optimal, policies",38
-15,"driving, autonomous, autonomous driving, vehicles, mobility",32
-16,"privacy, private, unlearning, data, dp",32
-17,"gpu, attention, cpu, layers, memory",31
-18,"memory, facts, retrieval, longterm, memories",30
-19,"policy, tasks, imitation, manipulation, learning",29
-20,"classification, image, convolutional, jpeg, compression",28
-21,"rendering, 3d, gaussian, 3dgs, geometry",27
-22,"reasoning, cot, latent, language, answer",23
-23,"atmospheric, forecast, spatiotemporal, climate, forecasting",20
-24,"anomaly, anomaly detection, detection, contamination, abnormal",14
-25,"adversarial, attacks, world models, world, perturbations",14
-26,"conservation, gradient, residual, curvature, transformers",13
-27,"training, grpo, rl, policy, entropy",13
-28,"social, behavior, chatbots, ai, training",13
-29,"reasoning, rlvr, grpo, onpolicy, rl",13
-30,"neural, neural operators, operators, operator, physical",13
-31,"gaussian, illumination, color, enhancement, details",13
-32,"proof, mathematics, formal, lean, language",11
-33,"safe, safety, rl, policy, neural ode",10
-34,"evidence, retrieval, document, multimodal, graph",10
-35,"learner, teaching, reallife, tutor, skills",8
-36,"continual, representational, recurrent, coupling, network",8
+0,"visual, image, multimodal, text, evidence",214
+1,"recommendation, item, user, semantic, items",120
+2,"contact, tactile, hand, manipulation, robot",118
+3,"clinical, segmentation, image, medical, imaging",96
+4,"agent, agents, skill, ai, llm",91
+5,"language, multilingual, models, bias, english",76
+6,"reasoning, training, rl, grpo, reward",67
+7,"speech, audio, speaker, asr, acoustic",66
+8,"attention, layers, cpu, memory, hardware",61
+9,"clinical, health, medical, patient, llms",58
+10,"navigation, planning, environments, obstacle, collision",57
+11,"lidar, point, radar, 3d, pose",49
+12,"attack, attacks, security, safety, model",49
+13,"neural, operator, physical, forecasting, learning",43
+14,"action, world, video, manipulation, future",39
+15,"driving, autonomous, autonomous driving, traffic, vehicle",38
+16,"policy, learning, manipulation, policies, robot",37
+17,"vla, action, robot, task, control",36
+18,"learning, decision, policy, optimal, reward",36
+19,"privacy, dp, private, unlearning, data",34
+20,"memory, retrieval, facts, user, long term",31
+21,"research, citation, retrieval, literature, academic",26
+22,"classification, convolutional, jpeg, image, pooling",24
+23,"rendering, 3d, 3dgs, gaussian, geometry",23
+24,"anomaly, anomaly detection, fault, variables, causal",23
+25,"retrieval, document, ranking, reranking, query",22
+26,"retrieval, rag, query, granularity, answer",18
+27,"color, illumination, gaussian, enhancement, resolution",14
+28,"scientific, reproducibility, papers, source, claim",13
+29,"task, merging, subspace, interference, task specific",12
+30,"social, behavior, ai, self, human",12
+31,"width, fisher, euclidean, fgd, jensen",12
+32,"adversarial, attack, world, attacks, perturbations",12
+33,"legal, charge, legal reasoning, law, legal ai",12
+34,"proof, formal, mathematics, lean, theorem",11
+35,"index, ann, retrieval, dimension, embeddings",11
+36,"safe, safety, rl, policy, cyber",10
+37,"retrieval, agentic, search, agent, shell",10
+38,"unlearning, cuda, forget, forget set, data",9

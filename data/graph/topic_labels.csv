@@ -1,0 +1,40 @@
+topic_id,label
+0,visual_image_multimodal
+1,recommendation_item_user
+2,contact_tactile_hand
+3,clinical_segmentation_image
+4,agent_agents_skill
+5,language_multilingual_models
+6,reasoning_training_rl
+7,speech_audio_speaker
+8,attention_layers_cpu
+9,clinical_health_medical
+10,navigation_planning_environments
+11,lidar_point_radar
+12,attack_attacks_security
+13,neural_operator_physical
+14,action_world_video
+15,driving_autonomous_autonomous driving
+16,policy_learning_manipulation
+17,vla_action_robot
+18,learning_decision_policy
+19,privacy_dp_private
+20,memory_retrieval_facts
+21,research_citation_retrieval
+22,classification_convolutional_jpeg
+23,rendering_3d_3dgs
+24,anomaly_anomaly detection_fault
+25,retrieval_document_ranking
+26,retrieval_rag_query
+27,color_illumination_gaussian
+28,scientific_reproducibility_papers
+29,task_merging_subspace
+30,social_behavior_ai
+31,width_fisher_euclidean
+32,adversarial_attack_world
+33,legal_charge_legal reasoning
+34,proof_formal_mathematics
+35,index_ann_retrieval
+36,safe_safety_rl
+37,retrieval_agentic_search
+38,unlearning_cuda_forget

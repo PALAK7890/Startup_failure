@@ -1,0 +1,39 @@
+Parent_ID,Parent_Name,Topics,Child_Left_ID,Child_Left_Name,Child_Right_ID,Child_Right_Name,Distance
+76,model_models_based_data_framework,"[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]",72,retrieval_memory_query_legal_llm,75,model_models_based_data_framework,1.3878792452952307
+75,model_models_based_data_framework,"[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 22, 23, 24, 27, 29, 30, 31, 32, 36, 38]",74,models_model_data_based_framework,70,action_robot_manipulation_policy_control,1.1851858184954607
+74,models_model_data_based_framework,"[0, 1, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 19, 22, 23, 24, 27, 29, 30, 31, 32, 38]",67,models_model_language_data_framework,73,neural_based_data_methods_method,1.0999718717998141
+73,neural_based_data_methods_method,"[8, 11, 13, 22, 23, 24, 27, 29, 31, 38]",69,neural_data_training_learning_model,58,3d_lidar_gaussian_geometry_camera,0.9701176002497496
+72,retrieval_memory_query_legal_llm,"[20, 21, 25, 26, 28, 33, 34, 35, 37]",66,retrieval_memory_query_rag_llm,71,legal_research_retrieval_citation_proof,0.9596324891271925
+71,legal_research_retrieval_citation_proof,"[21, 28, 33, 34]",68,legal_research_retrieval_citation_scientific,34,proof_formal_mathematics_lean_theorem,0.9142379113208348
+70,action_robot_manipulation_policy_control,"[2, 10, 14, 15, 16, 17, 18, 36]",62,robot_action_manipulation_real_world,56,learning_policy_rl_decision_reward,0.9069416461002328
+69,neural_data_training_learning_model,"[8, 13, 22, 24, 29, 31, 38]",64,task_unlearning_merging_subspace_specific,63,neural_learning_data_models_training,0.8910278565194452
+68,legal_research_retrieval_citation_scientific,"[21, 28, 33]",33,legal_charge_legal reasoning_law_legal ai,51,research_scientific_citation_retrieval_papers,0.8539343806330573
+67,models_model_language_data_framework,"[0, 1, 3, 4, 5, 6, 7, 9, 12, 19, 30, 32]",65,models_model_language_visual_reasoning,61,agent_agents_attack_data_model,0.8461275632810392
+66,retrieval_memory_query_rag_llm,"[20, 25, 26, 35, 37]",35,index_ann_retrieval_dimension_embeddings,60,retrieval_memory_query_rag_llm,0.8137923118418008
+65,models_model_language_visual_reasoning,"[0, 1, 3, 5, 6, 7, 9, 30]",30,social_behavior_ai_self_human,54,models_model_visual_reasoning_language,0.8134430827619299
+64,task_unlearning_merging_subspace_specific,"[29, 38]",38,unlearning_cuda_forget_forget set_data,29,task_merging_subspace_interference_task specific,0.7870998226697712
+63,neural_learning_data_models_training,"[8, 13, 22, 24, 31]",53,neural_training_learning_models_networks,59,anomaly_conditional_anomaly detection_variables_fault,0.77187336109747
+62,robot_action_manipulation_real_world,"[2, 10, 14, 15, 16, 17]",43,navigation_driving_planning_autonomous_based,47,robot_action_manipulation_contact_policy,0.7589048248227006
+61,agent_agents_attack_data_model,"[4, 12, 19, 32]",57,agent_agents_data_model_attack,32,adversarial_attack_world_attacks_perturbations,0.7383296450018643
+60,retrieval_memory_query_rag_llm,"[20, 25, 26, 37]",55,retrieval_query_rag_document_ranking,20,memory_retrieval_facts_user_long term,0.7292493960284872
+59,anomaly_conditional_anomaly detection_variables_fault,"[24, 31]",24,anomaly_anomaly detection_fault_variables_causal,31,width_fisher_euclidean_fgd_jensen,0.7195176054387182
+58,3d_lidar_gaussian_geometry_camera,"[11, 23, 27]",49,3d_lidar_geometry_camera_point,27,color_illumination_gaussian_enhancement_resolution,0.7118014584616782
+57,agent_agents_data_model_attack,"[4, 12, 19]",19,privacy_dp_private_unlearning_data,42,agent_agents_skill_ai_llm,0.6651421493265232
+56,learning_policy_rl_decision_reward,"[18, 36]",18,learning_decision_policy_optimal_reward,36,safe_safety_rl_policy_cyber,0.6573594082330488
+55,retrieval_query_rag_document_ranking,"[25, 26, 37]",25,retrieval_document_ranking_reranking_query,45,retrieval_rag_query_search_granularity,0.6446931256574158
+54,models_model_visual_reasoning_language,"[0, 1, 3, 5, 6, 7, 9]",50,recommendation_item_user_reasoning_semantic,52,visual_models_image_model_text,0.6366330521182479
+53,neural_training_learning_models_networks,"[8, 13, 22]",22,classification_convolutional_jpeg_image_pooling,46,neural_attention_training_models_operator,0.635266025739956
+52,visual_models_image_model_text,"[0, 3, 5, 7, 9]",48,visual_models_image_multimodal_model,7,speech_audio_speaker_asr_acoustic,0.6156731204660908
+51,research_scientific_citation_retrieval_papers,"[21, 28]",21,research_citation_retrieval_literature_academic,28,scientific_reproducibility_papers_source_claim,0.6153146241225098
+50,recommendation_item_user_reasoning_semantic,"[1, 6]",6,reasoning_training_rl_grpo_reward,1,recommendation_item_user_semantic_items,0.6025049080645073
+49,3d_lidar_geometry_camera_point,"[11, 23]",11,lidar_point_radar_3d_pose,23,rendering_3d_3dgs_gaussian_geometry,0.5799527137547249
+48,visual_models_image_multimodal_model,"[0, 3, 5, 9]",44,llms_models_clinical_language_multilingual,39,visual_image_multimodal_images_models,0.5791615635211733
+47,robot_action_manipulation_contact_policy,"[2, 14, 16, 17]",2,contact_tactile_hand_manipulation_robot,41,action_robot_world_vla_manipulation,0.5587877119410811
+46,neural_attention_training_models_operator,"[8, 13]",13,neural_operator_physical_forecasting_learning,8,attention_layers_cpu_memory_hardware,0.5478847990127945
+45,retrieval_rag_query_search_granularity,"[26, 37]",26,retrieval_rag_query_granularity_answer,37,retrieval_agentic_search_agent_shell,0.5363895221771682
+44,llms_models_clinical_language_multilingual,"[5, 9]",5,language_multilingual_models_bias_english,9,clinical_health_medical_patient_llms,0.5251307854822366
+43,navigation_driving_planning_autonomous_based,"[10, 15]",15,driving_autonomous_autonomous driving_traffic_vehicle,10,navigation_planning_environments_obstacle_collision,0.5245941446715849
+42,agent_agents_skill_ai_llm,"[4, 12]",12,attack_attacks_security_safety_model,4,agent_agents_skill_ai_llm,0.484628592684496
+41,action_robot_world_vla_manipulation,"[14, 16, 17]",16,policy_learning_manipulation_policies_robot,40,action_vla_robot_world_manipulation,0.45925644356209955
+40,action_vla_robot_world_manipulation,"[14, 17]",17,vla_action_robot_task_control,14,action_world_video_manipulation_future,0.40502004149383863
+39,visual_image_multimodal_images_models,"[0, 3]",3,clinical_segmentation_image_medical_imaging,0,visual_image_multimodal_text_evidence,0.40358446053168295
