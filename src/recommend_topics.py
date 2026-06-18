@@ -1,75 +1,76 @@
 import pandas as pd
-import torch
 from bertopic import BERTopic
+from sklearn.metrics.pairwise import cosine_similarity
 
-from link_prediction import GraphSAGELinkPredictor
-
-# =====================================
-# LOAD TOPIC LABELS
-# =====================================
-
-labels_df = pd.read_csv(
-    "data/graph/topic_labels.csv"
-)
-
-nodes_df = pd.read_csv(
-    "data/graph/nodes.csv"
-)
-
-features_df = pd.read_csv(
-    "data/graph/node_features.csv"
-)
-
-# =====================================
+# ============================================
 # LOAD MODEL
-# =====================================
+# ============================================
+
+print("Loading BERTopic model...")
 
 topic_model = BERTopic.load(
     "models/bertopic_model"
 )
 
-# =====================================
-# LOAD GNN
-# =====================================
+# ============================================
+# LOAD TOPIC LABELS
+# ============================================
 
-input_dim = (
-    features_df.shape[1] - 1
+labels_df = pd.read_csv(
+    "data/graph/topic_labels.csv"
 )
 
-model = GraphSAGELinkPredictor(
-    input_dim
-)
-
-model.load_state_dict(
-    torch.load(
-        "models/graphsage_link_predictor.pt",
-        map_location="cpu"
+topic_to_label = dict(
+    zip(
+        labels_df["topic_id"],
+        labels_df["label"]
     )
 )
 
-model.eval()
-query = "agentic rag"
+# ============================================
+# QUERY
+# ============================================
 
-topic_id, prob = topic_model.find_topics(
+query = input(
+    "\nEnter topic query: "
+)
+
+# ============================================
+# FIND CLOSEST TOPIC
+# ============================================
+
+topics, similarities = topic_model.find_topics(
     query,
     top_n=1
 )
 
-seed_topic = topic_id[0]
+seed_topic = topics[0]
+
+print("\nMatched Topic")
 
 print(
-    "Matched Topic:",
-    seed_topic
+    seed_topic,
+    topic_to_label.get(
+        seed_topic,
+        ""
+    )
 )
+
+# ============================================
+# TOPIC EMBEDDINGS
+# ============================================
+
 topic_embeddings = (
     topic_model.topic_embeddings_
 )
 
-query_embedding = (
-    topic_embeddings[seed_topic]
-)
+query_embedding = topic_embeddings[
+    seed_topic
+]
 
-from sklearn.metrics.pairwise import cosine_similarity
+# ============================================
+# COSINE SIMILARITIES
+# ============================================
 
 scores = cosine_similarity(
     [query_embedding],
@@ -78,14 +79,14 @@ scores = cosine_similarity(
 
 pairs = []
 
-for i, score in enumerate(scores):
+for topic_id, score in enumerate(scores):
 
-    if i == seed_topic:
+    if topic_id == seed_topic:
         continue
 
     pairs.append(
         (
-            i,
+            topic_id,
             score
         )
     )
@@ -95,15 +96,23 @@ pairs = sorted(
     key=lambda x:x[1],
     reverse=True
 )
-print("\nRecommended Topics\n")
 
-for topic, score in pairs[:10]:
+# ============================================
+# RECOMMENDATIONS
+# ============================================
+
+print("\nTop Related Topics\n")
+
+for topic_id, score in pairs[:10]:
 
     words = topic_model.get_topic(
-        topic
+        topic_id
     )
 
-    label = ", ".join(
+    if words is None:
+        continue
+
+    keywords = ", ".join(
         [
             x[0]
             for x in words[:5]
@@ -111,6 +120,7 @@ for topic, score in pairs[:10]:
     )
 
     print(
-        label,
-        round(score,3)
+        f"{topic_id:3d}",
+        f"{score:.3f}",
+        keywords
     )

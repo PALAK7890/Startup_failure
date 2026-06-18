@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 900px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#00bfff", "font": {"color": "white"}, "id": 0, "label": "0", "shape": "dot", "title": "\n    \u003cb\u003eTopic 0\u003c/b\u003e\u003cbr\u003e\n    Papers: 214\u003cbr\u003e\u003cbr\u003e\n    visual, image, multimodal, text, evidence\n    ", "value": 214}, {"color": "#00bfff", "font": {"color": "white"}, "id": 1, "label": "1", "shape": "dot", "title": "\n    \u003cb\u003eTopic 1\u003c/b\u003e\u003cbr\u003e\n    Papers: 120\u003cbr\u003e\u003cbr\u003e\n    recommendation, item, user, semantic, items\n    ", "value": 120}, {"color": "#00bfff", "font": {"color": "white"}, "id": 2, "label": "2", "shape": "dot", "title": "\n    \u003cb\u003eTopic 2\u003c/b\u003e\u003cbr\u003e\n    Papers: 118\u003cbr\u003e\u003cbr\u003e\n    contact, tactile, hand, manipulation, robot\n    ", "value": 118}, {"color": "#00bfff", "font": {"color": "white"}, "id": 3, "label": "3", "shape": "dot", "title": "\n    \u003cb\u003eTopic 3\u003c/b\u003e\u003cbr\u003e\n    Papers: 96\u003cbr\u003e\u003cbr\u003e\n    clinical, segmentation, image, medical, imaging\n    ", "value": 96}, {"color": "#00bfff", "font": {"color": "white"}, "id": 4, "label": "4", "shape": "dot", "title": "\n    \u003cb\u003eTopic 4\u003c/b\u003e\u003cbr\u003e\n    Papers: 91\u003cbr\u003e\u003cbr\u003e\n    agent, agents, skill, ai, llm\n    ", "value": 91}, {"color": "#00bfff", "font": {"color": "white"}, "id": 5, "label": "5", "shape": "dot", "title": "\n    \u003cb\u003eTopic 5\u003c/b\u003e\u003cbr\u003e\n    Papers: 76\u003cbr\u003e\u003cbr\u003e\n    language, multilingual, models, bias, english\n    ", "value": 76}, {"color": "#00bfff", "font": {"color": "white"}, "id": 6, "label": "6", "shape": "dot", "title": "\n    \u003cb\u003eTopic 6\u003c/b\u003e\u003cbr\u003e\n    Papers: 67\u003cbr\u003e\u003cbr\u003e\n    reasoning, training, rl, grpo, reward\n    ", "value": 67}, {"color": "#00bfff", "font": {"color": "white"}, "id": 7, "label": "7", "shape": "dot", "title": "\n    \u003cb\u003eTopic 7\u003c/b\u003e\u003cbr\u003e\n    Papers: 66\u003cbr\u003e\u003cbr\u003e\n    speech, audio, speaker, asr, acoustic\n    ", "value": 66}, {"color": "#00bfff", "font": {"color": "white"}, "id": 8, "label": "8", "shape": "dot", "title": "\n    \u003cb\u003eTopic 8\u003c/b\u003e\u003cbr\u003e\n    Papers: 61\u003cbr\u003e\u003cbr\u003e\n    attention, layers, cpu, memory, hardware\n    ", "value": 61}, {"color": "#00bfff", "font": {"color": "white"}, "id": 9, "label": "9", "shape": "dot", "title": "\n    \u003cb\u003eTopic 9\u003c/b\u003e\u003cbr\u003e\n    Papers: 58\u003cbr\u003e\u003cbr\u003e\n    clinical, health, medical, patient, llms\n    ", "value": 58}, {"color": "#00bfff", "font": {"color": "white"}, "id": 10, "label": "10", "shape": "dot", "title": "\n    \u003cb\u003eTopic 10\u003c/b\u003e\u003cbr\u003e\n    Papers: 57\u003cbr\u003e\u003cbr\u003e\n    navigation, planning, environments, obstacle, collision\n    ", "value": 57}, {"color": "#00bfff", "font": {"color": "white"}, "id": 11, "label": "11", "shape": "dot", "title": "\n    \u003cb\u003eTopic 11\u003c/b\u003e\u003cbr\u003e\n    Papers: 49\u003cbr\u003e\u003cbr\u003e\n    lidar, point, radar, 3d, pose\n    ", "value": 49}, {"color": "#00bfff", "font": {"color": "white"}, "id": 12, "label": "12", "shape": "dot", "title": "\n    \u003cb\u003eTopic 12\u003c/b\u003e\u003cbr\u003e\n    Papers: 49\u003cbr\u003e\u003cbr\u003e\n    attack, attacks, security, safety, model\n    ", "value": 49}, {"color": "#00bfff", "font": {"color": "white"}, "id": 13, "label": "13", "shape": "dot", "title": "\n    \u003cb\u003eTopic 13\u003c/b\u003e\u003cbr\u003e\n    Papers: 43\u003cbr\u003e\u003cbr\u003e\n    neural, operator, physical, forecasting, learning\n    ", "value": 43}, {"color": "#00bfff", "font": {"color": "white"}, "id": 14, "label": "14", "shape": "dot", "title": "\n    \u003cb\u003eTopic 14\u003c/b\u003e\u003cbr\u003e\n    Papers: 39\u003cbr\u003e\u003cbr\u003e\n    action, world, video, manipulation, future\n    ", "value": 39}, {"color": "#00bfff", "font": {"color": "white"}, "id": 15, "label": "15", "shape": "dot", "title": "\n    \u003cb\u003eTopic 15\u003c/b\u003e\u003cbr\u003e\n    Papers: 38\u003cbr\u003e\u003cbr\u003e\n    driving, autonomous, autonomous driving, traffic, vehicle\n    ", "value": 38}, {"color": "#00bfff", "font": {"color": "white"}, "id": 16, "label": "16", "shape": "dot", "title": "\n    \u003cb\u003eTopic 16\u003c/b\u003e\u003cbr\u003e\n    Papers: 37\u003cbr\u003e\u003cbr\u003e\n    policy, learning, manipulation, policies, robot\n    ", "value": 37}, {"color": "#00bfff", "font": {"color": "white"}, "id": 17, "label": "17", "shape": "dot", "title": "\n    \u003cb\u003eTopic 17\u003c/b\u003e\u003cbr\u003e\n    Papers: 36\u003cbr\u003e\u003cbr\u003e\n    vla, action, robot, task, control\n    ", "value": 36}, {"color": "#00bfff", "font": {"color": "white"}, "id": 18, "label": "18", "shape": "dot", "title": "\n    \u003cb\u003eTopic 18\u003c/b\u003e\u003cbr\u003e\n    Papers: 36\u003cbr\u003e\u003cbr\u003e\n    learning, decision, policy, optimal, reward\n    ", "value": 36}, {"color": "#00bfff", "font": {"color": "white"}, "id": 19, "label": "19", "shape": "dot", "title": "\n    \u003cb\u003eTopic 19\u003c/b\u003e\u003cbr\u003e\n    Papers: 34\u003cbr\u003e\u003cbr\u003e\n    privacy, dp, private, unlearning, data\n    ", "value": 34}, {"color": "#00bfff", "font": {"color": "white"}, "id": 20, "label": "20", "shape": "dot", "title": "\n    \u003cb\u003eTopic 20\u003c/b\u003e\u003cbr\u003e\n    Papers: 31\u003cbr\u003e\u003cbr\u003e\n    memory, retrieval, facts, user, long term\n    ", "value": 31}, {"color": "#00bfff", "font": {"color": "white"}, "id": 21, "label": "21", "shape": "dot", "title": "\n    \u003cb\u003eTopic 21\u003c/b\u003e\u003cbr\u003e\n    Papers: 26\u003cbr\u003e\u003cbr\u003e\n    research, citation, retrieval, literature, academic\n    ", "value": 26}, {"color": "#00bfff", "font": {"color": "white"}, "id": 22, "label": "22", "shape": "dot", "title": "\n    \u003cb\u003eTopic 22\u003c/b\u003e\u003cbr\u003e\n    Papers: 24\u003cbr\u003e\u003cbr\u003e\n    classification, convolutional, jpeg, image, pooling\n    ", "value": 24}, {"color": "#00bfff", "font": {"color": "white"}, "id": 23, "label": "23", "shape": "dot", "title": "\n    \u003cb\u003eTopic 23\u003c/b\u003e\u003cbr\u003e\n    Papers: 23\u003cbr\u003e\u003cbr\u003e\n    rendering, 3d, 3dgs, gaussian, geometry\n    ", "value": 23}, {"color": "#00bfff", "font": {"color": "white"}, "id": 24, "label": "24", "shape": "dot", "title": "\n    \u003cb\u003eTopic 24\u003c/b\u003e\u003cbr\u003e\n    Papers: 23\u003cbr\u003e\u003cbr\u003e\n    anomaly, anomaly detection, fault, variables, causal\n    ", "value": 23}, {"color": "#00bfff", "font": {"color": "white"}, "id": 25, "label": "25", "shape": "dot", "title": "\n    \u003cb\u003eTopic 25\u003c/b\u003e\u003cbr\u003e\n    Papers: 22\u003cbr\u003e\u003cbr\u003e\n    retrieval, document, ranking, reranking, query\n    ", "value": 22}, {"color": "#00bfff", "font": {"color": "white"}, "id": 26, "label": "26", "shape": "dot", "title": "\n    \u003cb\u003eTopic 26\u003c/b\u003e\u003cbr\u003e\n    Papers: 18\u003cbr\u003e\u003cbr\u003e\n    retrieval, rag, query, granularity, answer\n    ", "value": 18}, {"color": "#00bfff", "font": {"color": "white"}, "id": 27, "label": "27", "shape": "dot", "title": "\n    \u003cb\u003eTopic 27\u003c/b\u003e\u003cbr\u003e\n    Papers: 14\u003cbr\u003e\u003cbr\u003e\n    color, illumination, gaussian, enhancement, resolution\n    ", "value": 14}, {"color": "#00bfff", "font": {"color": "white"}, "id": 28, "label": "28", "shape": "dot", "title": "\n    \u003cb\u003eTopic 28\u003c/b\u003e\u003cbr\u003e\n    Papers: 13\u003cbr\u003e\u003cbr\u003e\n    scientific, reproducibility, papers, source, claim\n    ", "value": 13}, {"color": "#00bfff", "font": {"color": "white"}, "id": 29, "label": "29", "shape": "dot", "title": "\n    \u003cb\u003eTopic 29\u003c/b\u003e\u003cbr\u003e\n    Papers: 12\u003cbr\u003e\u003cbr\u003e\n    task, merging, subspace, interference, task specific\n    ", "value": 12}, {"color": "#00bfff", "font": {"color": "white"}, "id": 30, "label": "30", "shape": "dot", "title": "\n    \u003cb\u003eTopic 30\u003c/b\u003e\u003cbr\u003e\n    Papers: 12\u003cbr\u003e\u003cbr\u003e\n    social, behavior, ai, self, human\n    ", "value": 12}, {"color": "#00bfff", "font": {"color": "white"}, "id": 31, "label": "31", "shape": "dot", "title": "\n    \u003cb\u003eTopic 31\u003c/b\u003e\u003cbr\u003e\n    Papers: 12\u003cbr\u003e\u003cbr\u003e\n    width, fisher, euclidean, fgd, jensen\n    ", "value": 12}, {"color": "#00bfff", "font": {"color": "white"}, "id": 32, "label": "32", "shape": "dot", "title": "\n    \u003cb\u003eTopic 32\u003c/b\u003e\u003cbr\u003e\n    Papers: 12\u003cbr\u003e\u003cbr\u003e\n    adversarial, attack, world, attacks, perturbations\n    ", "value": 12}, {"color": "#00bfff", "font": {"color": "white"}, "id": 33, "label": "33", "shape": "dot", "title": "\n    \u003cb\u003eTopic 33\u003c/b\u003e\u003cbr\u003e\n    Papers: 12\u003cbr\u003e\u003cbr\u003e\n    legal, charge, legal reasoning, law, legal ai\n    ", "value": 12}, {"color": "#00bfff", "font": {"color": "white"}, "id": 34, "label": "34", "shape": "dot", "title": "\n    \u003cb\u003eTopic 34\u003c/b\u003e\u003cbr\u003e\n    Papers: 11\u003cbr\u003e\u003cbr\u003e\n    proof, formal, mathematics, lean, theorem\n    ", "value": 11}, {"color": "#00bfff", "font": {"color": "white"}, "id": 35, "label": "35", "shape": "dot", "title": "\n    \u003cb\u003eTopic 35\u003c/b\u003e\u003cbr\u003e\n    Papers: 11\u003cbr\u003e\u003cbr\u003e\n    index, ann, retrieval, dimension, embeddings\n    ", "value": 11}, {"color": "#00bfff", "font": {"color": "white"}, "id": 36, "label": "36", "shape": "dot", "title": "\n    \u003cb\u003eTopic 36\u003c/b\u003e\u003cbr\u003e\n    Papers: 10\u003cbr\u003e\u003cbr\u003e\n    safe, safety, rl, policy, cyber\n    ", "value": 10}, {"color": "#00bfff", "font": {"color": "white"}, "id": 37, "label": "37", "shape": "dot", "title": "\n    \u003cb\u003eTopic 37\u003c/b\u003e\u003cbr\u003e\n    Papers: 10\u003cbr\u003e\u003cbr\u003e\n    retrieval, agentic, search, agent, shell\n    ", "value": 10}, {"color": "#00bfff", "font": {"color": "white"}, "id": 38, "label": "38", "shape": "dot", "title": "\n    \u003cb\u003eTopic 38\u003c/b\u003e\u003cbr\u003e\n    Papers: 9\u003cbr\u003e\u003cbr\u003e\n    unlearning, cuda, forget, forget set, data\n    ", "value": 9}]);
+                  edges = new vis.DataSet([{"color": "#888888", "from": 0, "title": "Similarity: 0.887", "to": 1, "value": 8.873}, {"color": "#888888", "from": 0, "title": "Similarity: 0.793", "to": 2, "value": 7.932}, {"color": "#888888", "from": 0, "title": "Similarity: 0.836", "to": 5, "value": 8.360999999999999}, {"color": "#888888", "from": 0, "title": "Similarity: 0.780", "to": 6, "value": 7.800000000000001}, {"color": "#888888", "from": 0, "title": "Similarity: 0.893", "to": 7, "value": 8.93}, {"color": "#888888", "from": 0, "title": "Similarity: 0.741", "to": 8, "value": 7.41}, {"color": "#888888", "from": 0, "title": "Similarity: 0.770", "to": 9, "value": 7.699}, {"color": "#888888", "from": 0, "title": "Similarity: 0.784", "to": 10, "value": 7.843999999999999}, {"color": "#888888", "from": 0, "title": "Similarity: 0.711", "to": 13, "value": 7.111}, {"color": "#888888", "from": 0, "title": "Similarity: 0.805", "to": 15, "value": 8.053}, {"color": "#888888", "from": 0, "title": "Similarity: 0.766", "to": 16, "value": 7.66}, {"color": "#888888", "from": 0, "title": "Similarity: 0.786", "to": 17, "value": 7.86}, {"color": "#888888", "from": 0, "title": "Similarity: 0.792", "to": 18, "value": 7.917999999999999}, {"color": "#888888", "from": 0, "title": "Similarity: 0.806", "to": 21, "value": 8.06}, {"color": "#888888", "from": 0, "title": "Similarity: 0.714", "to": 25, "value": 7.144}, {"color": "#888888", "from": 0, "title": "Similarity: 0.755", "to": 26, "value": 7.552}, {"color": "#888888", "from": 0, "title": "Similarity: 0.742", "to": 27, "value": 7.416}, {"color": "#888888", "from": 0, "title": "Similarity: 0.705", "to": 29, "value": 7.053000000000001}, {"color": "#888888", "from": 0, "title": "Similarity: 0.792", "to": 30, "value": 7.925}, {"color": "#888888", "from": 0, "title": "Similarity: 0.719", "to": 31, "value": 7.186}, {"color": "#888888", "from": 0, "title": "Similarity: 0.733", "to": 33, "value": 7.332}, {"color": "#888888", "from": 0, "title": "Similarity: 0.757", "to": 38, "value": 7.567}, {"color": "#888888", "from": 1, "title": "Similarity: 0.714", "to": 2, "value": 7.136}, {"color": "#888888", "from": 1, "title": "Similarity: 0.729", "to": 4, "value": 7.2860000000000005}, {"color": "#888888", "from": 1, "title": "Similarity: 0.713", "to": 6, "value": 7.128}, {"color": "#888888", "from": 1, "title": "Similarity: 0.730", "to": 7, "value": 7.298}, {"color": "#888888", "from": 1, "title": "Similarity: 0.709", "to": 8, "value": 7.085}, {"color": "#888888", "from": 1, "title": "Similarity: 0.788", "to": 15, "value": 7.883}, {"color": "#888888", "from": 1, "title": "Similarity: 0.725", "to": 23, "value": 7.246}, {"color": "#888888", "from": 1, "title": "Similarity: 0.711", "to": 24, "value": 7.112}, {"color": "#888888", "from": 1, "title": "Similarity: 0.734", "to": 30, "value": 7.343}, {"color": "#888888", "from": 2, "title": "Similarity: 0.726", "to": 21, "value": 7.263}, {"color": "#888888", "from": 2, "title": "Similarity: 0.793", "to": 26, "value": 7.932}, {"color": "#888888", "from": 2, "title": "Similarity: 0.741", "to": 27, "value": 7.414}, {"color": "#888888", "from": 2, "title": "Similarity: 0.709", "to": 38, "value": 7.0889999999999995}, {"color": "#888888", "from": 3, "title": "Similarity: 0.719", "to": 11, "value": 7.1899999999999995}, {"color": "#888888", "from": 3, "title": "Similarity: 0.767", "to": 15, "value": 7.671}, {"color": "#888888", "from": 3, "title": "Similarity: 0.784", "to": 17, "value": 7.843999999999999}, {"color": "#888888", "from": 3, "title": "Similarity: 0.778", "to": 18, "value": 7.78}, {"color": "#888888", "from": 4, "title": "Similarity: 0.718", "to": 10, "value": 7.18}, {"color": "#888888", "from": 4, "title": "Similarity: 0.741", "to": 23, "value": 7.406000000000001}, {"color": "#888888", "from": 5, "title": "Similarity: 0.762", "to": 7, "value": 7.624}, {"color": "#888888", "from": 5, "title": "Similarity: 0.705", "to": 10, "value": 7.050999999999999}, {"color": "#888888", "from": 5, "title": "Similarity: 0.727", "to": 13, "value": 7.265000000000001}, {"color": "#888888", "from": 5, "title": "Similarity: 0.711", "to": 18, "value": 7.105}, {"color": "#888888", "from": 5, "title": "Similarity: 0.753", "to": 21, "value": 7.5280000000000005}, {"color": "#888888", "from": 5, "title": "Similarity: 0.757", "to": 29, "value": 7.567}, {"color": "#888888", "from": 5, "title": "Similarity: 0.719", "to": 31, "value": 7.191}, {"color": "#888888", "from": 5, "title": "Similarity: 0.786", "to": 38, "value": 7.8580000000000005}, {"color": "#888888", "from": 6, "title": "Similarity: 0.730", "to": 7, "value": 7.3}, {"color": "#888888", "from": 6, "title": "Similarity: 0.717", "to": 8, "value": 7.169}, {"color": "#888888", "from": 6, "title": "Similarity: 0.748", "to": 26, "value": 7.48}, {"color": "#888888", "from": 6, "title": "Similarity: 0.724", "to": 27, "value": 7.235}, {"color": "#888888", "from": 7, "title": "Similarity: 0.722", "to": 9, "value": 7.221}, {"color": "#888888", "from": 7, "title": "Similarity: 0.741", "to": 17, "value": 7.406000000000001}, {"color": "#888888", "from": 7, "title": "Similarity: 0.740", "to": 19, "value": 7.403}, {"color": "#888888", "from": 7, "title": "Similarity: 0.750", "to": 21, "value": 7.5009999999999994}, {"color": "#888888", "from": 7, "title": "Similarity: 0.760", "to": 30, "value": 7.598000000000001}, {"color": "#888888", "from": 7, "title": "Similarity: 0.711", "to": 31, "value": 7.107}, {"color": "#888888", "from": 7, "title": "Similarity: 0.701", "to": 38, "value": 7.0089999999999995}, {"color": "#888888", "from": 9, "title": "Similarity: 0.752", "to": 14, "value": 7.521}, {"color": "#888888", "from": 9, "title": "Similarity: 0.701", "to": 23, "value": 7.008}, {"color": "#888888", "from": 9, "title": "Similarity: 0.755", "to": 30, "value": 7.547000000000001}, {"color": "#888888", "from": 10, "title": "Similarity: 0.704", "to": 29, "value": 7.043}, {"color": "#888888", "from": 11, "title": "Similarity: 0.733", "to": 12, "value": 7.3309999999999995}, {"color": "#888888", "from": 11, "title": "Similarity: 0.774", "to": 15, "value": 7.74}, {"color": "#888888", "from": 11, "title": "Similarity: 0.792", "to": 16, "value": 7.925}, {"color": "#888888", "from": 11, "title": "Similarity: 0.779", "to": 17, "value": 7.795}, {"color": "#888888", "from": 11, "title": "Similarity: 0.776", "to": 18, "value": 7.759}, {"color": "#888888", "from": 12, "title": "Similarity: 0.718", "to": 24, "value": 7.175000000000001}, {"color": "#888888", "from": 13, "title": "Similarity: 0.763", "to": 20, "value": 7.632}, {"color": "#888888", "from": 13, "title": "Similarity: 0.749", "to": 29, "value": 7.486000000000001}, {"color": "#888888", "from": 13, "title": "Similarity: 0.736", "to": 33, "value": 7.361}, {"color": "#888888", "from": 15, "title": "Similarity: 0.737", "to": 16, "value": 7.372999999999999}, {"color": "#888888", "from": 15, "title": "Similarity: 0.866", "to": 17, "value": 8.663}, {"color": "#888888", "from": 15, "title": "Similarity: 0.890", "to": 18, "value": 8.905}, {"color": "#888888", "from": 15, "title": "Similarity: 0.736", "to": 24, "value": 7.356}, {"color": "#888888", "from": 15, "title": "Similarity: 0.718", "to": 33, "value": 7.176}, {"color": "#888888", "from": 16, "title": "Similarity: 0.713", "to": 17, "value": 7.126}, {"color": "#888888", "from": 16, "title": "Similarity: 0.730", "to": 18, "value": 7.302999999999999}, {"color": "#888888", "from": 16, "title": "Similarity: 0.717", "to": 33, "value": 7.17}, {"color": "#888888", "from": 17, "title": "Similarity: 0.879", "to": 18, "value": 8.795}, {"color": "#888888", "from": 17, "title": "Similarity: 0.727", "to": 19, "value": 7.265000000000001}, {"color": "#888888", "from": 17, "title": "Similarity: 0.713", "to": 33, "value": 7.130999999999999}, {"color": "#888888", "from": 17, "title": "Similarity: 0.729", "to": 37, "value": 7.2909999999999995}, {"color": "#888888", "from": 19, "title": "Similarity: 0.750", "to": 37, "value": 7.504999999999999}, {"color": "#888888", "from": 21, "title": "Similarity: 0.728", "to": 26, "value": 7.276}, {"color": "#888888", "from": 21, "title": "Similarity: 0.737", "to": 27, "value": 7.3660000000000005}, {"color": "#888888", "from": 21, "title": "Similarity: 0.771", "to": 38, "value": 7.715}, {"color": "#888888", "from": 22, "title": "Similarity: 0.740", "to": 26, "value": 7.401999999999999}, {"color": "#888888", "from": 22, "title": "Similarity: 0.813", "to": 27, "value": 8.126999999999999}, {"color": "#888888", "from": 22, "title": "Similarity: 0.731", "to": 29, "value": 7.31}, {"color": "#888888", "from": 22, "title": "Similarity: 0.718", "to": 38, "value": 7.177}, {"color": "#888888", "from": 24, "title": "Similarity: 0.767", "to": 28, "value": 7.671}, {"color": "#888888", "from": 25, "title": "Similarity: 0.709", "to": 32, "value": 7.094}, {"color": "#888888", "from": 26, "title": "Similarity: 0.833", "to": 27, "value": 8.33}, {"color": "#888888", "from": 26, "title": "Similarity: 0.748", "to": 36, "value": 7.48}, {"color": "#888888", "from": 26, "title": "Similarity: 0.758", "to": 38, "value": 7.5760000000000005}, {"color": "#888888", "from": 27, "title": "Similarity: 0.876", "to": 38, "value": 8.757}, {"color": "#888888", "from": 33, "title": "Similarity: 0.757", "to": 37, "value": 7.57}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"shape": "dot", "font": {"size": 16}}, "edges": {"smooth": false}, "physics": {"enabled": true, "forceAtlas2Based": {"gravitationalConstant": -50, "centralGravity": 0.01, "springLength": 120, "springConstant": 0.08}, "solver": "forceAtlas2Based"}, "interaction": {"hover": true, "navigationButtons": true, "keyboard": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
